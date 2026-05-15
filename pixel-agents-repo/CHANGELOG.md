@@ -4,6 +4,7 @@
 
 ### Fixes
 
+- **JSONL file tracking cleanup** — Fixed two bugs in `knownJsonlFiles` management: `reassignAgentToFile` now properly adds the new file and removes the old file from tracking, preventing `/clear` files from being re-detected; `removeAgent` now removes the agent's file from tracking on removal, preventing stale entries from accumulating and blocking future `/clear` detection
 - **Layout watcher race condition** — Replaced boolean `skipNextChange` flag with exact mtime matching in the cross-window layout file watcher, preventing legitimate external changes from being incorrectly skipped when multiple VS Code windows write in quick succession.
 
 ## v1.3.0
