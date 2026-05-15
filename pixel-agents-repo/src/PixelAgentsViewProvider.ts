@@ -166,11 +166,11 @@ export class PixelAgentsViewProvider implements vscode.WebviewViewProvider {
       },
       onSessionClear: (agentId, newSessionId, newTranscriptPath) => {
         if (newTranscriptPath) {
-          this.knownJsonlFiles.add(newTranscriptPath);
           reassignAgentToFile(
             agentId,
             newTranscriptPath,
             this.agents,
+            this.knownJsonlFiles,
             this.fileWatchers,
             this.pollingTimers,
             this.waitingTimers,
@@ -230,6 +230,7 @@ export class PixelAgentsViewProvider implements vscode.WebviewViewProvider {
           removeAgent(
             agentId,
             this.agents,
+            this.knownJsonlFiles,
             this.fileWatchers,
             this.pollingTimers,
             this.waitingTimers,
@@ -277,6 +278,7 @@ export class PixelAgentsViewProvider implements vscode.WebviewViewProvider {
     removeAgent(
       teammateAgentId,
       this.agents,
+      this.knownJsonlFiles,
       this.fileWatchers,
       this.pollingTimers,
       this.waitingTimers,
@@ -303,6 +305,7 @@ export class PixelAgentsViewProvider implements vscode.WebviewViewProvider {
         removeAgent(
           id,
           this.agents,
+          this.knownJsonlFiles,
           this.fileWatchers,
           this.pollingTimers,
           this.waitingTimers,
@@ -384,6 +387,7 @@ export class PixelAgentsViewProvider implements vscode.WebviewViewProvider {
             removeAgent(
               message.id,
               this.agents,
+              this.knownJsonlFiles,
               this.fileWatchers,
               this.pollingTimers,
               this.waitingTimers,
@@ -449,11 +453,11 @@ export class PixelAgentsViewProvider implements vscode.WebviewViewProvider {
             if (agent) {
               dismissedJsonlFiles.set(agent.jsonlFile, Date.now());
               this.globalDismissedFiles.add(agent.jsonlFile);
-              this.knownJsonlFiles.delete(agent.jsonlFile);
             }
             removeAgent(
               id,
               this.agents,
+              this.knownJsonlFiles,
               this.fileWatchers,
               this.pollingTimers,
               this.waitingTimers,
@@ -819,6 +823,7 @@ export class PixelAgentsViewProvider implements vscode.WebviewViewProvider {
           removeAgent(
             id,
             this.agents,
+            this.knownJsonlFiles,
             this.fileWatchers,
             this.pollingTimers,
             this.waitingTimers,
@@ -938,6 +943,7 @@ export class PixelAgentsViewProvider implements vscode.WebviewViewProvider {
       removeAgent(
         id,
         this.agents,
+        this.knownJsonlFiles,
         this.fileWatchers,
         this.pollingTimers,
         this.waitingTimers,
