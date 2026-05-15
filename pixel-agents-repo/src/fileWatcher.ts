@@ -149,6 +149,7 @@ export function startFileWatching(
             agentId,
             file,
             agents,
+            deps.knownJsonlFiles,
             deps.fileWatchers,
             deps.pollingTimers,
             deps.waitingTimers,
@@ -1303,6 +1304,7 @@ export function startStaleExternalAgentCheck(
       removeAgent(
         id,
         agents,
+        knownJsonlFiles,
         fileWatchers,
         pollingTimers,
         waitingTimers,
@@ -1319,6 +1321,7 @@ export function reassignAgentToFile(
   agentId: number,
   newFilePath: string,
   agents: Map<number, AgentState>,
+  knownJsonlFiles: Set<string>,
   fileWatchers: Map<number, fs.FSWatcher>,
   pollingTimers: Map<number, ReturnType<typeof setInterval>>,
   waitingTimers: Map<number, ReturnType<typeof setTimeout>>,
@@ -1345,11 +1348,13 @@ export function reassignAgentToFile(
 
   // Permanently dismiss old file so scanners never re-adopt it as external
   clearDismissedFiles.add(agent.jsonlFile);
+  knownJsonlFiles.delete(agent.jsonlFile);
 
   // Swap to new file (update sessionId for hook registration).
   // Keep hookDelivered — if hooks worked before /clear, they'll work after.
   agent.sessionId = path.basename(newFilePath, '.jsonl');
   agent.jsonlFile = newFilePath;
+  knownJsonlFiles.add(newFilePath);
   agent.fileOffset = 0;
   agent.lineBuffer = '';
   persistAgents();
