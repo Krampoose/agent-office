@@ -2,7 +2,7 @@
 FROM node:18-alpine AS build
 WORKDIR /app
 
-COPY package.json package-lock.json tsconfig.base.json ./
+COPY package.json tsconfig.base.json ./
 COPY packages/ packages/
 
 RUN npm install --production=false
